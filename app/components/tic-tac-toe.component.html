@@ -1,0 +1,13 @@
+<input type="number" [(ngModel)]="number" name="number"/><br />
+<hr />
+<div *ngFor="let line of field; let i = index">
+    <input  type="text"
+            value="{{square.value}}"
+            (click)="toggleTurn(square, i, j)"
+            *ngFor="let square of line.items; let j = index"
+            class="square"
+            readonly />
+</div>
+{{step}}
+<h3>{{gameOverMsg}}<h3>
+<h3>{{error}}<h3>
