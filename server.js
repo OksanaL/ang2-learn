@@ -9,14 +9,15 @@ var server = express();
 server.use('/', express.static(__dirname + '/'));
 
 server.listen(8080, () => {
-    console.log('Exmple on port 8080!');
+    console.log('Exmple on port 8081!');
 });
+
 
 //db connection
 //connect('mongodb://username:password@host:port/database')
-var db = mongoose.connect('mongodb://localhost/myapp', (err, db) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected!');
-});
+// var db = mongoose.connect('mongodb://localhost/myapp', (err, db) => {
+//     if (err) {
+//         throw err;
+//     }
+//     console.log('Connected!');
+// });

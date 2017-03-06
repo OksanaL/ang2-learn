@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
+import { CheckWinService } from '../services/check-win.service';
+import '../interfaces/tic-tac-toe.interfaces';
 
 @Component({
-    moduleId: module.id,
+    // moduleId: module.id,
     selector: 'tic-tac-toe',
     templateUrl: './tic-tac-toe.component.html',
     styleUrls: [ './tic-tac-toe.component.css' ]
@@ -9,6 +11,7 @@ import {Component} from '@angular/core';
 
 export class TicTacToeComponent {
     _n: number;
+    _r: number;
     x: string;
     o: string;
     error: string;
@@ -16,6 +19,7 @@ export class TicTacToeComponent {
     step: number;
 
     field: line[];
+    private checkWinService: CheckWinService;
 
     constructor() {
         this.x = 'X';
@@ -23,8 +27,22 @@ export class TicTacToeComponent {
         this.error = '';
         this.gameOverMsg = '';
         this.step = 0;
-
+        this.radius = 3;
         this.number = 3;
+    }
+
+    set radius(newVal) {
+        this._r = newVal;
+        this.step = 0;
+        this.gameOverMsg = '';
+
+        //set field
+        this.field = this.newField(newVal);
+        this.checkWinService = new CheckWinService(this.field, this.radius);
+    }
+
+    get radius() {
+        return this._r
     }
 
     set number(newVal) {
@@ -34,10 +52,15 @@ export class TicTacToeComponent {
 
         //set field
         this.field = this.newField(newVal);
+        this.checkWinService = new CheckWinService(this.field, this.radius);
     }
 
     get number() {
         return this._n;
+    }
+
+    reset() {
+        this.number = this._n;
     }
 
     newField(newVal: number) {
@@ -70,9 +93,9 @@ export class TicTacToeComponent {
             } else {
                 this.setSquare(square, 1, this.x)
             }
-
-            if (this.checkWin(i, j)) {
-                this.gameOverMsg += 'Game Over!!';
+            let winner = this.checkWinService.checkWin(i, j)
+            if (winner != '') {
+                this.gameOverMsg = winner + 'Game Over!!';
             } else if (this.step == Math.pow(this.number, 2)) {
                 this.gameOverMsg = 'Nobody wins! Game Over!!';
             }
@@ -82,155 +105,4 @@ export class TicTacToeComponent {
             }
         }
     }
-
-    checkWin(line: number, col: number, r: number = 5) {
-        //horizontal
-        let arr: number[] = [];
-        let sum: number = 0;
-        let start = (col-r > 0 ? col-r+1 : 0); //start point
-        let end = (col+r < this.number ? col+r : this.number); //end point
-        for (let j = start; j < end; j++) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[line].items[j].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-        }
-
-        //vertical
-        arr = [];
-        sum = 0;
-        start = (line-r > 0 ? line-r+1 : 0); //start point
-        end = (line+r < this.number ? line+r : this.number); //end point
-        for (let i = start; i < end; i++) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[i].items[col].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-        }
-
-        //main diagonal
-        let h = 0;
-        arr = [];
-        sum = 0;
-        start = line;
-        end = col;
-        //up
-        while (h < r &&
-                start >= 0 &&
-                end >= 0) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[start].items[end].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-            start--;
-            end--;
-            h++;
-        }
-
-        h = 0;
-        arr = [];
-        sum = 0;
-        start = line;
-        end = col;
-        //down
-        while (h < r &&
-                start < this.number &&
-                end < this.number) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[start].items[end].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-            start++;
-            end++;
-            h++;
-        }
-
-        //asside diagonal
-        h = 0;
-        arr = [];
-        sum = 0;
-        start = line;
-        end = col;
-        //up
-        while (h < r &&
-                start >= 0 &&
-                end < this.number) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[start].items[end].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-            start--;
-            end++;
-            h++;
-        }
-
-        h = 0;
-        arr = [];
-        sum = 0;
-        start = line;
-        end = col;
-        //down
-        while (h < r &&
-                start < this.number &&
-                end >= 0) {
-            if (arr.length == r) {
-                arr.shift();
-            }
-            arr.push(this.field[start].items[end].weight);
-            sum = arr.reduce(function(a, b) {
-                return a + b;
-            });
-            if(Math.abs(sum) == r) {
-                this.gameOverMsg = "End!";
-                return true;
-            }
-            start++;
-            end--;
-            h++;
-        }
-    }
-}
-
-interface line {
-    items: square[];
-}
-
-interface square {
-    weight: number;
-    value: string;
 }

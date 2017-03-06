@@ -1,4 +1,11 @@
+Size:
 <input type="number" [(ngModel)]="number" name="number"/><br />
+Radius:
+<input type="number" [(ngModel)]="radius" name="radius"/><br />
+<input  type="button"
+        value="Reset"
+        (click)="reset()"
+     />
 <hr />
 <div *ngFor="let line of field; let i = index">
     <input  type="text"
@@ -8,6 +15,6 @@
             class="square"
             readonly />
 </div>
-{{step}}
+<br />
 <h3>{{gameOverMsg}}<h3>
 <h3>{{error}}<h3>
