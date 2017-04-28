@@ -3,7 +3,7 @@ import '../interfaces/tic-tac-toe.interfaces';
 
 @Injectable()
 
-export class CheckWinService {
+export class CheckWinComponent {
     field: line[];
     radius: number;
     size: number;

@@ -1,0 +1,5 @@
+<div class="row" *ngFor="let row of board; let x=index">
+    <div class="column" *ngFor="let col of row; let y=index; trackBy: y">
+        <div snake [currentDirection]="snake.direction" (onChangeDirection)="onChangeDirection($event)" *ngIf="setSnake(x, y)"></div>
+    </div>
+</div>

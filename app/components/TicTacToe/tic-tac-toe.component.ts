@@ -1,12 +1,15 @@
 import {Component} from '@angular/core';
-import { CheckWinService } from '../services/check-win.service';
-import '../interfaces/tic-tac-toe.interfaces';
+import { CheckWinComponent } from './CheckWin/check-win.component';
+import './interfaces/tic-tac-toe.interfaces';
+
+import '../../../styles/style.scss';
 
 @Component({
     // moduleId: module.id,
     selector: 'tic-tac-toe',
     templateUrl: './tic-tac-toe.component.html',
-    styleUrls: [ './tic-tac-toe.component.css' ]
+    // styleUrls: [ './tic-tac-toe.component.css' ]
+    styles: [ require('./tic-tac-toe.component.scss') ]
 })
 
 export class TicTacToeComponent {
@@ -19,7 +22,7 @@ export class TicTacToeComponent {
     step: number;
 
     field: line[];
-    private checkWinService: CheckWinService;
+    private checkWinComponent: CheckWinComponent;
 
     constructor() {
         this.x = 'X';
@@ -37,8 +40,8 @@ export class TicTacToeComponent {
         this.gameOverMsg = '';
 
         //set field
-        this.field = this.newField(newVal);
-        this.checkWinService = new CheckWinService(this.field, this.radius);
+        this.field = this.newField(this.number);
+        this.checkWinComponent = new CheckWinComponent(this.field, this.radius);
     }
 
     get radius() {
@@ -52,7 +55,7 @@ export class TicTacToeComponent {
 
         //set field
         this.field = this.newField(newVal);
-        this.checkWinService = new CheckWinService(this.field, this.radius);
+        this.checkWinComponent = new CheckWinComponent(this.field, this.radius);
     }
 
     get number() {
@@ -93,7 +96,7 @@ export class TicTacToeComponent {
             } else {
                 this.setSquare(square, 1, this.x)
             }
-            let winner = this.checkWinService.checkWin(i, j)
+            let winner = this.checkWinComponent.checkWin(i, j)
             if (winner != '') {
                 this.gameOverMsg = winner + 'Game Over!!';
             } else if (this.step == Math.pow(this.number, 2)) {

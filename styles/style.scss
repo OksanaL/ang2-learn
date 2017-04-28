@@ -1,0 +1,16 @@
+$body-background: #ffede0;
+$square-background: #e6f3ff;
+$error-msg-color: #c60000;
+$win-msg-color: #009167;
+
+body {
+  background-color: $body-background;
+}
+
+h3.win {
+    color: $win-msg-color;
+}
+
+h3.error {
+    color: $error-msg-color;
+}

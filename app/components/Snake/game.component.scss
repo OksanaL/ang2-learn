@@ -1,0 +1,22 @@
+$square-background: #E69FA2;
+
+.row {
+    display: flex;
+}
+
+.column {
+    display: inline-flex;
+    border: 1px solid black;
+    background-color: $square-background;
+    width: 15px;
+    height: 15px;
+    margin-left: -1px;
+    margin-bottom: -1px;
+}
+
+.snake {
+    background-color: black;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}

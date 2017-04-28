@@ -9,8 +9,8 @@ module.exports = {
     // app - the application code.
     //---
     entry: {
-    'polyfills': './polyfills.ts',
-    'vendor': './vendor.ts',
+    'polyfills': './config/polyfills.ts',
+    'vendor': './config/vendor.ts',
     'app': './app/main.ts'
     },
 
@@ -19,7 +19,7 @@ module.exports = {
     // (for regular JavaScript files and pre-compiled TypeScript files).
     //---
     resolve: {
-    extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js']
     },
 
     // awesome-typescript-loader - a loader to transpile the Typescript code to ES5, guided by the tsconfig.json file
@@ -51,6 +51,11 @@ module.exports = {
                 exclude: helpers.root('app'),
                 loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
             },
+            {
+                test: /\.scss$/,
+                exclude: helpers.root('app'),
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
+            },
             // filters for component-scoped styles and loads them as strings
             // via the raw loader — which is what Angular expects to do with styles specified in a styleUrls metadata property.
             //---
@@ -58,6 +63,11 @@ module.exports = {
                 test: /\.css$/,
                 include: helpers.root('app'),
                 loader: 'raw-loader'
+            },
+            {
+                test: /\.scss$/,
+                include: helpers.root('app'),
+                loader: ['raw-loader', 'sass-loader']
             }
         ]
     },
